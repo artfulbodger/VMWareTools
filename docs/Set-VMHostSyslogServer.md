@@ -1,11 +1,11 @@
 ---
-external help file: VMWareTools-help.xml
-Module Name: VMWareTools
+external help file: VMware.VimAutomation.ViCore.Cmdlets.dll-Help.xml
+Module Name: VMware.VimAutomation.Core
 online version:
 schema: 2.0.0
 ---
 
-# Set-VMHostSyslogServer
+# Set-VMHostSysLogServer
 
 ## SYNOPSIS
 Configures Syslog settings for given VM Host.
@@ -15,7 +15,8 @@ This cmdlet configures the remote syslog server of the specified hosts.
 ## SYNTAX
 
 ```
-Set-VMHostSyslogServer [-VMHost] <String> [-syslogcollector] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-VMHostSysLogServer [[-SysLogServer] <NamedIPEndPoint[]>] [[-VMHost] <VMHost[]>] [-SysLogServerPort <Int32>]
+ [-Server <VIServer[]>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -48,34 +49,80 @@ Removes the SysLog server from the Host virtual machine host.
 
 ## PARAMETERS
 
+### -Server
+Specifies the vCenter Server systems on which you want to run the cmdlet. If no value is given to this parameter, the command runs on the default servers. For more information about default servers, see the description of Connect-VIServer.
+
+```yaml
+Type: VIServer[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: True
+```
+
+### -SysLogServer
+Specifies the sys log servers you want to configure. The parameter accepts objects of the NamedIPEndPoint, IPEndPoint, IPAddress, and String types. The accepted formats, if string is used, are DNS names and the standard IPv6/IPv4 format: FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:192.168.0.1:80, where the FFFF:FFFF:FFFF:FFFF:FFFF:FFFF can be replaced by any hex value with the same structure (both upper or lower case). It is only meaningful in case of IPv6 address and is omitted for IPv4. The 192.168.0.1 part is mandatory and can be any address in the IPv4 format. The :80 part is optional. If omitted, the port must be specified through the SysLogServerPort parameter. If Syslog is set to $null, the configured syslog server, if any, is removed.
+
+```yaml
+Type: NamedIPEndPoint[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -SysLogServerPort
+Specifies the sys log server port. Must be specified if the string that is passed to the SysLogServer parameter does not contain the port value, or the argument of the SysLogServer is an IP address.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -VMHost
 IP address or FQDN for VM Host.
 
 Specifies the host whose syslog servers you want to configure.
 
 ```yaml
-Type: String
+Type: VMHost[]
 Parameter Sets: (All)
-Aliases:
+Aliases: Host
 
-Required: True
+Required: False
 Position: 2
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: True
 ```
 
-### -syslogcollector
-IP address or FQDN for remote Syslog Collector.
+### -Confirm
+If the value is $true, indicates that the cmdlet asks for confirmation before running.
+If the value is $false, the cmdlet runs without asking for user confirmation.
 
 ```yaml
-Type: String
+Type: SwitchParameter
 Parameter Sets: (All)
-Aliases:
+Aliases: cf
 
-Required: True
-Position: 2
-Default value: None
+Required: False
+Position: Named
+Default value: $true
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -91,22 +138,6 @@ Aliases: wi
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Confirm
-If the value is $true, indicates that the cmdlet asks for confirmation before running.
-If the value is $false, the cmdlet runs without asking for user confirmation.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: $true
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
